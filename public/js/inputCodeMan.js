@@ -32,7 +32,7 @@ fileInput.addEventListener('change', function(event) {
                     localStorage.setItem('scannedCode', code.data);
 
                     // Redirect to result.html
-                    window.location.href = 'html/result.html';
+                    window.location.href = '/html/result.html';
                 } else {
                     output.textContent = 'QR code was not found';
                 }
