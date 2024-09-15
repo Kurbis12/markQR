@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/regMenuStyle.css">
+    <title>QR Code Result</title>
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-ok {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registration Page</h1>
+    
+    <div class="form-container">
+        <form id="registrationForm">
+            <div>
+                <p id="result"></p>
+            </div>
+            <div id="plant">
+                <button id="plantReg" type="button">Plant Registration</button>
+            </div>
+            <div id="leaf">
+                <button id="leafReg" type="button">Leaf Registration</button>
+            </div>
+            <div id="stump">
+                <button id="stumpReg" type="button">Stump Registration</button>
+            </div>
+            <div id="bunch">
+                <button id="bunchReg" type="button">Bunch Registration</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal HTML -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>QR code already exists in the system. Redirecting to the home page.</p>
+            <button class="modal-button" id="closeModalBtn">OK</button>
+        </div>
+    </div>
+
+    <script>
+        let db;
+
+        // Function to open IndexedDB and initialize the database
+        function initializeDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("scannedCodeDatabase", 1);
+
+                request.onupgradeneeded = function(event) {
+                    db = event.target.result;
+                    db.createObjectStore("scanned_code", { keyPath: "code" });
+                };
+
+                request.onsuccess = function(event) {
+                    db = event.target.result;
+                    resolve();
+                };
+
+                request.onerror = function(event) {
+                    console.error("IndexedDB error: ", event.target.errorCode);
+                    reject(event.target.errorCode);
+                };
+            });
+        }
+
+        // Function to check if the scannedCode exists in the database
+        function checkScannedCode(scannedCode) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    return reject("Database not initialized.");
+                }
+
+                const transaction = db.transaction(["scanned_code"]);
+                const objectStore = transaction.objectStore("scanned_code");
+                const request = objectStore.get(scannedCode);
+
+                request.onsuccess = function(event) {
+                    const result = event.target.result;
+                    resolve(!!result); // Convert to boolean
+                };
+
+                request.onerror = function(event) {
+                    reject(event.target.errorCode);
+                };
+            });
+        }
+
+        // Show modal with custom message
+         // Function to display the modal
+         function showModal() {
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'block';
+
+            // Close modal when the user clicks the close button (×)
+            const closeBtn = document.getElementsByClassName('close')[0];
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+                window.location.href = '/';  // Redirect to home after closing
+            };
+
+            // Close modal when the user clicks the OK button
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            closeModalBtn.onclick = function() {
+                modal.style.display = 'none';
+                window.location.href = '/';  // Redirect to home after closing
+            };
+
+            // Close modal if user clicks outside the modal content
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                    window.location.href = '/';  // Redirect to home after closing
+                }
+            };
+        }
+
+        // Add event listeners to each button
+        function addButtonEventListeners() {
+            document.getElementById('plantReg').addEventListener('click', function() {
+                redirectToPlant('plant');
+            });
+
+            document.getElementById('leafReg').addEventListener('click', function() {
+                redirectToLeaf('leaf');
+            });
+
+            document.getElementById('stumpReg').addEventListener('click', function() {
+                redirectToStump('stump');
+            });
+
+            document.getElementById('bunchReg').addEventListener('click', function() {
+                redirectToBunch('bunch');
+            });
+        }
+
+        // Function to redirect to specific pages
+        function redirectToPlant(type) {
+            window.location.href = `../html/regPlant.html?type=${type}`;
+        }
+        function redirectToLeaf(type) {
+            window.location.href = `../html/regLeaf.html?type=${type}`;
+        }
+        function redirectToStump(type) {
+            window.location.href = `../html/regStump.html?type=${type}`;
+        }
+        function redirectToBunch(type) {
+            window.location.href = `../html/regBunch.html?type=${type}`;
+        }
+
+        // Display the QR code data from localStorage and check the database
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                await initializeDB(); // Ensure the database is initialized
+                addButtonEventListeners(); // Add event listeners after DB initialization
+
+                const resultElement = document.getElementById('result');
+                const scannedCode = localStorage.getItem('scannedCode');
+                if (scannedCode) {
+                    resultElement.textContent = `${scannedCode}`;
+                    
+                    try {
+                        const exists = await checkScannedCode(scannedCode);
+                        if (exists) {
+                            showModal(); // Show modal if code exists
+                        }
+                    } catch (error) {
+                        console.error('Error checking scanned code: ', error);
+                    }
+                } else {
+                    resultElement.textContent = 'No QR code data found.';
+                }
+            } catch (error) {
+                console.error('Error initializing database: ', error);
+            }
+        });
+    </script>
+</body>
+</html>

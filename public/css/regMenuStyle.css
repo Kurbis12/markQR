@@ -1,0 +1,173 @@
+body {
+    background-color: #a6a6a7;
+}
+
+/* Style for the form container */
+/* .form-container { */
+    /* width: 90%; Use a percentage to make it responsive */
+    /* max-width: 500px; Maximum width for larger screens */
+    /* margin: 0 auto; */
+    /* padding: 20px; */
+    /* background-color: #f7f7f7; */
+    /* border-radius: 10px; */
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+/* } */
+
+/* Style for the form fields */
+#registrationForm div {
+    margin-bottom: 20px;
+}
+
+p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    color: #000000;
+}
+
+/* Common style for both select and input fields */
+#greenhouse, input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* Button container */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* General button styling */
+button {
+    width: 48%; /* Buttons take up 48% of the container width */
+    padding: 12px 0; /* Adjust padding to look good on smaller screens */
+    font-size: 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Back button styling */
+#Back {
+    background-color: #dc3545;
+    color: white;
+}
+
+#Back:hover {
+    background-color: #c82333;
+}
+
+#Back:active {
+    background-color: #a71d2a;
+}
+
+/* Next button styling */
+#Next {
+    background-color: #28a745;
+    color: white;
+}
+
+#Next:hover {
+    background-color: #218838;
+}
+
+#Next:active {
+    background-color: #1e7e34;
+}
+
+/* Add some hover and focus styles for accessibility */
+button:hover {
+    transform: scale(1.05);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 15px; /* Adjust padding on smaller screens */
+    }
+
+    button {
+        width: 100%; /* Stack buttons on smaller screens */
+        height: 15vh;
+        margin-bottom: 10px; /* Add space between buttons */
+    }
+}
+
+/* Media Query for very large screens */
+@media (min-width: 1200px) {
+    .form-container {
+        max-width: 700px; /* Increase max width on very large screens */
+    }
+
+    button {
+        font-size: 18px; /* Slightly larger font on big screens */
+    }
+}
+
+
+/* Modal styles */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0); /* Semi-transparent background */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 50% auto; 
+    padding: 20px;
+    border: 1px solid #888888;
+    width: 80%; 
+    max-width: 400px; 
+    text-align: center;
+    border-radius: 20px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-button {
+    background-color: #af4c4c;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    width: 70%;
+    height: 8vh;
+    margin-bottom: 10px;
+}
+
+.modal-button:hover {
+    background-color: #45a049;
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Flower Inputs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #4CAF50;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .flower-container {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .flower-select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #back {
+            background-color: #f44336;
+        }
+
+        #back:hover {
+            background-color: #e53935;
+        }
+
+        /* For smaller screens */
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .button-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <h1>Enter Flower Data</h1>
+
+    <div id="flowerInputContainer" class="flower-container"></div>
+
+    <div class="button-container">
+        <button id="back" onclick="window.history.back();">Back</button>
+        <button id="Next" type="button">Next</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Retrieve bunchData from localStorage and parse it
+            const bunchData = JSON.parse(localStorage.getItem('bunchData'));
+
+            // Check if bunchData and flower_amount exist
+            if (bunchData && bunchData.flower_amount) {
+                const flowerAmount = bunchData.flower_amount;
+
+                // Get the container where select fields will be added
+                const flowerInputContainer = document.getElementById('flowerInputContainer');
+
+                // Generate select fields and labels based on the flower_amount
+                for (let i = 1; i <= flowerAmount; i++) {
+                    // Create a label for the select field
+                    const label = document.createElement('label');
+                    label.htmlFor = `flowerSelect${i}`; // Associate label with the select element
+                    label.textContent = `Flower ${i}`;   // Set the label text (e.g., Flower 1)
+
+                    // Create a select element
+                    const select = document.createElement('select');
+                    select.className = 'flower-select';
+                    select.id = `flowerSelect${i}`;
+
+                    // Create options for the select field
+                    const option0 = document.createElement('option');
+                    option0.value = '';
+                    option0.text = 'Select a stage';
+
+                    const option1 = document.createElement('option');
+                    option1.value = 'Open flower';
+                    option1.text = 'Open flower';
+
+                    const option2 = document.createElement('option');
+                    option2.value = 'Discard flower';
+                    option2.text = 'Discard flower';
+
+                    const option3 = document.createElement('option');
+                    option3.value = 'Dropped fruit';
+                    option3.text = 'Dropped fruit';
+
+                    const option4 = document.createElement('option');
+                    option4.value = 'Fruit maturity';
+                    option4.text = 'Fruit maturity';
+
+                    const option5 = document.createElement('option');
+                    option5.value = 'Harvest fruit';
+                    option5.text = 'Harvest fruit';
+
+                    // Append the options to the select field
+                    select.appendChild(option0);
+                    select.appendChild(option1);
+                    select.appendChild(option2);
+                    select.appendChild(option3);
+                    select.appendChild(option4);
+                    select.appendChild(option5);
+
+                    // Append the label and select field to the container
+                    flowerInputContainer.appendChild(label);
+                    flowerInputContainer.appendChild(select);
+                }
+            } else {
+                // If no data is found in localStorage
+                const flowerInputContainer = document.getElementById('flowerInputContainer');
+                flowerInputContainer.textContent = 'No flower data available in localStorage.';
+            }
+
+            // Handle the Next button click
+            document.getElementById('Next').addEventListener('click', function() {
+                // Check if bunchData exists
+                if (bunchData && bunchData.flower_amount) {
+                    const flowerAmount = bunchData.flower_amount;
+
+                    // Create an array to store flower data
+                    const flowerData = [];
+
+                    // Collect data from all flower select fields
+                    for (let i = 1; i <= flowerAmount; i++) {
+                        const flowerValue = document.getElementById(`flowerSelect${i}`).value;
+                        flowerData.push(flowerValue);
+                    }
+
+                    // Add the flowerData to bunchData
+                    bunchData.flower_data = flowerData;
+
+                    // Save the updated bunchData back to localStorage
+                    localStorage.setItem('bunchData', JSON.stringify(bunchData));
+
+                    // Redirect to confirm.html
+                    window.location.href = 'confirm.html';
+                } else {
+                    alert('No flower data available to save.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

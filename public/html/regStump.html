@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/registrationStyle.css">
+    <title>QR Code Result</title>
+</head>
+<body>
+    <h1>Stump Registration Page</h1>
+    
+    <div class="form-container">
+        <form id="registrationForm">
+            <div>
+                <p id="result"></p>
+            </div>
+            <div id="ghOption">
+                <select id="greenhouse">
+                    <option id="selectOpt" value="" disabled selected>Select Plant name</option>
+                    <option value="plant-name1">GH1L1P24(GH1 Line-1 Plant-24)</option>
+                    <option value="plant-name2">GH2L4P20(GH2 Line-4 Plant-20)</option>
+                    <option value="plant-name3">GH3L6P17(GH3 Line-6 Plant-17)</option>
+                    <option value="plant-name4">GH4L3P12(GH4 Line-3 Plant-12)</option>
+                    <option value="plant-name5">GH5L8P8(GH5 Line-8 Plant-8)</option>
+                    <option value="plant-name6">GH6L2P10(GH6 Line-2 Plant-10)</option>
+                    <option value="plant-name7">GH7L5P5(GH7 Line-5 Plant-5)</option>
+                    <option value="plant-name8">GH8L7P15(GH8 Line-7 Plant-15)</option>
+                </select>
+            </div>
+            <div id="stumpName">
+                <input id="stumpInput" type="number" placeholder="dia@10cm">
+            </div>
+            <!-- Optional: Add plant number input if needed -->
+            <!-- <div id="plantName">
+                <input id="plantInput" type="number" placeholder="Add plant number">
+            </div> -->
+        </form>
+        <div class="button-container">
+            <button id="Back" onclick="window.history.back();">Back</button>
+            <button id="Next" type="button">Next</button>
+        </div>
+    </div>
+    
+    <script>
+        // Display the QR code data from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultElement = document.getElementById('result');
+            const scannedCode = localStorage.getItem('scannedCode');
+            if (scannedCode) {
+                resultElement.textContent = scannedCode;
+            } else {
+                resultElement.textContent = 'No QR code data found.';
+            }
+        });
+
+        // Handle the Next button click event and store form data in localStorage
+        document.getElementById('Next').addEventListener('click', function(){
+            const greenhouse = document.getElementById('greenhouse').value;
+            const stumpInput = document.getElementById('stumpInput').value;
+            const resultElement = document.getElementById('result').textContent;
+            const date = new Date().toISOString();
+
+            if (greenhouse && stumpInput && resultElement) {
+                const stumpData = {
+                    code_name: resultElement,
+                    greenhouse: greenhouse,
+                    diameter: stumpInput,
+                    date: date
+                };
+
+                localStorage.setItem('stumpData', JSON.stringify(stumpData));
+
+                // Redirect to the confirmation page
+                window.location.href = '../html/confirm.html';
+            } else {
+                alert('Please fill out all fields');
+            }
+        });
+
+        // Change dropdown text color
+        document.getElementById('greenhouse').addEventListener('change', function() {
+            this.style.color = this.value ? 'black' : 'lightgrey';
+        });
+    </script>
+</body>
+</html>

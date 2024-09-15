@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/confirmStyle.css">
+    <title>Confirmation Page</title>
+</head>
+<body>
+    <h1>Confirmation Page</h1>
+    
+    <div class="confirmation-container">
+        <p>Your registration details have been submitted. Please confirm to proceed.</p>
+        
+        <!-- Section to display entered data -->
+        <div id="dataDisplay">
+    <h2>Review your details:</h2>
+    <div id="plantData">
+        <h3>Plant Data:</h3>
+        <div class="data-container">
+            <div><strong>Code Name:</strong></div>
+            <div id="plantCodeNameDisplay">Loading...</div>
+            <div><strong>Greenhouse:</strong></div>
+            <div id="plantGreenhouseDisplay">Loading...</div>
+            <div><strong>Line Number:</strong></div>
+            <div id="plantLineDisplay">Loading...</div>
+            <div><strong>Plant Number:</strong></div>
+            <div id="plantPlantDisplay">Loading...</div>
+        </div>
+    </div>
+    <div id="leafData">
+        <h3>Leaf Data:</h3>
+        <div class="data-container">
+            <div><strong>Code Name:</strong></div>
+            <div id="leafCodeNameDisplay">Loading...</div>
+            <div><strong>Greenhouse:</strong></div>
+            <div id="leafGreenhouseDisplay">Loading...</div>
+            <div><strong>Length:</strong></div>
+            <div id="leafLengthDisplay">Loading...</div>
+            <div><strong>Width:</strong></div>
+            <div id="leafWidthDisplay">Loading...</div>
+        </div>
+    </div>
+    <div id="stumpData">
+        <h3>Stump Data:</h3>
+        <div class="data-container">
+            <div><strong>Code Name:</strong></div>
+            <div id="stumpCodeNameDisplay">Loading...</div>
+            <div><strong>Greenhouse:</strong></div>
+            <div id="stumpGreenhouseDisplay">Loading...</div>
+            <div><strong>Diameter:</strong></div>
+            <div id="stumpDiameterDisplay">Loading...</div>
+        </div>
+    </div>
+    <div id="bunchData">
+        <h3>Bunch Data:</h3>
+        <div class="data-container">
+            <div><strong>Code Name:</strong></div>
+            <div id="bunchCodeNameDisplay">Loading...</div>
+            <div><strong>Greenhouse:</strong></div>
+            <div id="bunchGreenhouseDisplay">Loading...</div>
+            <div><strong>Bunch Number:</strong></div>
+            <div id="bunchBunchNumberDisplay">Loading...</div>
+            <div><strong>Flower Amount:</strong></div>
+            <div id="bunchFlowerAmountDisplay">Loading...</div>
+            <div><strong>Flower Data:</strong></div>
+            <div id="bunchFlowerDataDisplay">Loading...</div>
+        </div>
+    </div>
+</div>
+
+        <!-- Buttons to confirm or cancel -->
+        <div class="button-container">
+            <button id="Confirm">Confirm</button>
+            <button id="Cancel" onclick="window.location.href = '/';">Cancel</button>
+        </div>
+    </div>
+    
+    <script>
+       
+        // Handle the Confirm button click event
+         // Load the plant, leaf, and stump data from localStorage
+         document.addEventListener('DOMContentLoaded', function() {
+    // Load the data from localStorage
+    const plantData = JSON.parse(localStorage.getItem('plantData'));
+    const leafData = JSON.parse(localStorage.getItem('leafData'));
+    const stumpData = JSON.parse(localStorage.getItem('stumpData'));
+    const bunchData = JSON.parse(localStorage.getItem('bunchData'));
+    const scannedCode = localStorage.getItem('scannedCode');  // Get the scanned code
+
+    function populateData(containerId, data) {
+        const container = document.getElementById(containerId);
+        const dataContainer = container.querySelector('.data-container');
+        
+        if (data) {
+            dataContainer.innerHTML = ''; // Clear previous content
+
+            Object.entries(data).forEach(([key, value]) => {
+                const label = document.createElement('div');
+                label.textContent = `${key.replace(/_/g, ' ')}:`;
+
+                const valueElement = document.createElement('div');
+                valueElement.textContent = value;
+
+                dataContainer.appendChild(label);
+                dataContainer.appendChild(valueElement);
+            });
+        } else {
+            container.style.display = 'none';
+        }
+    }
+
+    // Populate each section with data
+    populateData('plantData', plantData);
+    populateData('leafData', leafData);
+    populateData('stumpData', stumpData);
+
+    if (bunchData) {
+        const bunchDataContainer = document.getElementById('bunchData').querySelector('.data-container');
+        bunchDataContainer.innerHTML = ''; // Clear previous content
+        console.log(bunchData);
+
+        // Handle other bunch data fields
+        const fields = ['code_name', 'greenhouse', 'bunch_nr', 'date','flower_amount'];
+        fields.forEach(field => {
+            const label = document.createElement('div');
+            label.id = "labeltest";
+            label.textContent = `${field.replace(/_/g, ' ')}:`;
+
+            const valueElement = document.createElement('div');
+            valueElement.textContent = bunchData[field] || 'Not available'; // Handle missing data
+
+            bunchDataContainer.appendChild(label);
+            bunchDataContainer.appendChild(valueElement);
+        });
+
+        // Handle flower data
+        if (bunchData.flower_data && Array.isArray(bunchData.flower_data)) {
+            const container = document.createElement('div');
+            container.style.display = 'flex';
+            container.style.flexDirection = 'row';
+            container.style.alignItems = 'center';  // Vertically align items
+            container.style.justifyContent = 'center'; // Center horizontally
+            container.style.gap = '10px';  // Add a small gap between columns
+            const row = document.createElement('div');
+        row.className = 'flower-row';
+
+            const namesColumn = document.createElement('div');
+            namesColumn.style.flex = '1';
+            namesColumn.style.paddingRight = '5px';  // Reduce padding for closer spacing
+            namesColumn.style.marginRight = '5px';  // Reduce margin for tighter columns
+            namesColumn.style.borderRight = '1px solid #ddd';
+
+            const valuesColumn = document.createElement('div');
+            valuesColumn.style.flex = '1';
+            valuesColumn.style.paddingLeft = '5px';  // Reduce padding for closer spacing
+
+            bunchData.flower_data.forEach((value, index) => {
+                const name = document.createElement('div');
+                name.id = 'flowertest';
+                name.style.marginBottom = '5px';  // Reduce bottom margin
+                name.textContent = `flower${index + 1}`;
+                namesColumn.appendChild(name);
+
+                const data = document.createElement('div');
+                data.id = 'resulttest';
+                data.style.marginBottom = '5px';  // Reduce bottom margin
+                data.textContent = value;
+                valuesColumn.appendChild(data);
+            });
+
+            container.appendChild(namesColumn);
+            container.appendChild(valuesColumn);
+            bunchDataContainer.appendChild(container);
+        } else {
+            bunchDataContainer.textContent = 'No flower data available';
+        }
+
+            } else {
+                document.getElementById('bunchData').style.display = 'none';
+            }
+    });
+
+    
+        // Function to save the scannedCode into a separate IndexedDB
+        function saveScannedCode(scannedCode) {
+            const request = indexedDB.open('scannedCodeDatabase', 1);
+    
+            request.onupgradeneeded = function(event) {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('scanned_code')) {
+                    db.createObjectStore('scanned_code', { keyPath: 'id', autoIncrement: true });
+                }
+            };
+    
+            request.onsuccess = function(event) {
+                const db = event.target.result;
+                const transaction = db.transaction('scanned_code', 'readwrite');
+                const store = transaction.objectStore('scanned_code');
+    
+                const scannedCodeData = { code: scannedCode, date: new Date().toISOString() };
+                store.add(scannedCodeData);
+    
+                transaction.oncomplete = function() {
+                    console.log('Scanned code saved successfully');
+                };
+    
+                transaction.onerror = function(event) {
+                    console.error('Error saving scanned code:', event);
+                };
+            };
+    
+            request.onerror = function(event) {
+                console.error('Error opening scannedCodeDatabase:', event);
+            };
+        }
+    
+        // Handle the Confirm button click event
+        document.getElementById('Confirm').addEventListener('click', function() {
+            const plantData = JSON.parse(localStorage.getItem('plantData'));
+            const leafData = JSON.parse(localStorage.getItem('leafData'));
+            const stumpData = JSON.parse(localStorage.getItem('stumpData'));
+            const bunchData = JSON.parse(localStorage.getItem('bunchData'));
+            const scannedCode = localStorage.getItem('scannedCode');  // Get the scanned code
+    
+            if (plantData || leafData || stumpData || bunchData) {
+                // Open IndexedDB and store plant, leaf, and stump data
+                const request = indexedDB.open('plantData', 1);
+    
+                request.onupgradeneeded = function(event) {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains('plants')) {
+                        db.createObjectStore('plants', { keyPath: 'code_name' });
+                    }
+                    if (!db.objectStoreNames.contains('leaves')) {
+                        db.createObjectStore('leaves', { keyPath: 'code_name' });
+                    }
+                    if (!db.objectStoreNames.contains('stumps')) {
+                        db.createObjectStore('stumps', { keyPath: 'code_name' });
+                    }
+                    if (!db.objectStoreNames.contains('bunch')) {
+                        db.createObjectStore('bunch', { keyPath: 'code_name' });
+                    }
+                };
+    
+                request.onsuccess = function(event) {
+                    const db = event.target.result;
+    
+                    // Handle plant data
+                    if (plantData) {
+                        const plantTransaction = db.transaction('plants', 'readwrite');
+                        const plantStore = plantTransaction.objectStore('plants');
+                        plantStore.add(plantData);
+    
+                        plantTransaction.oncomplete = function() {
+                            console.log('Plant data saved successfully');
+                        };
+    
+                        plantTransaction.onerror = function(event) {
+                            console.error('Error saving plant data:', event);
+                        };
+                    }
+    
+                    // Handle leaf data
+                    if (leafData) {
+                        const leafTransaction = db.transaction('leaves', 'readwrite');
+                        const leafStore = leafTransaction.objectStore('leaves');
+                        leafStore.add(leafData);
+    
+                        leafTransaction.oncomplete = function() {
+                            console.log('Leaf data saved successfully');
+                        };
+    
+                        leafTransaction.onerror = function(event) {
+                            console.error('Error saving leaf data:', event);
+                        };
+                    }
+
+                    // Handle stump data
+                    if (stumpData) {
+                        const stumpTransaction = db.transaction('stumps', 'readwrite');
+                        const stumpStore = stumpTransaction.objectStore('stumps');
+                        stumpStore.add(stumpData);
+
+                        stumpTransaction.oncomplete = function() {
+                            console.log('Stump data saved successfully');
+                        };
+
+                        stumpTransaction.onerror = function(event) {
+                            console.error('Error saving stump data:', event);
+                        };
+                    }
+
+                    // Handle bunch data
+                    if (bunchData) {
+                        const bunchTransaction = db.transaction('bunch', 'readwrite');
+                        const bunchStore = bunchTransaction.objectStore('bunch');
+                        bunchStore.add(bunchData);
+
+                        bunchTransaction.oncomplete = function() {
+                            console.log('Bunch data saved successfully');
+                        };
+
+                        bunchTransaction.onerror = function (event) {
+                            console.error('Error saving bunch data:', event);
+                        }
+                    }
+    
+                    // If a scanned code exists, save it to the scannedCodeDatabase
+                    if (scannedCode) {
+                        saveScannedCode(scannedCode);
+                    }
+    
+                    // Clean up and redirect after all transactions complete
+                    localStorage.removeItem('plantData');
+                    localStorage.removeItem('leafData');
+                    localStorage.removeItem('stumpData');
+                    localStorage.removeItem('bunchData');
+                    localStorage.removeItem('scannedCode'); // Remove scanned code from localStorage
+                    alert('Data successfully saved!');
+                    window.location.href = '/';
+                };
+    
+                request.onerror = function(event) {
+                    console.error('Error opening IndexedDB:', event);
+                };
+            } else {
+                alert('No data found to save');
+                window.location.href = '/';
+            }
+        });
+    </script>
+    
+    
+</body>
+</html>

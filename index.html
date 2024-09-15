@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR code scaner</title>
+    <link rel="stylesheet" href="/css/styleFirst.css">
+    
+</head>    
+    <body>
+        <h1>QR code scanner: MARK2</h1>
+        <!-- For testic static Images -->
+        <input type="file" id="file-input" accept="image/*">
+        <div id="video-container">
+            <!-- Video feed from the camera -->
+            <video id="video" autoplay></video>
+            <div id="scanner-overlay">
+                <!-- Scanning window -->
+                <div id="scanner-box">
+                    <div class="corner top-left"></div>
+                    <div class="corner top-right"></div>
+                    <div class="corner bottom-left"></div>
+                    <div class="corner bottom-right"></div>
+                </div> 
+            </div>
+        </div>
+        <!-- Hidden canvas to extract video frame -->
+        <canvas id="canvas"></canvas>
+        <!-- Debug canvas to visualize the video frame -->
+        <canvas id="debug-canvas"></canvas>
+        <div id="output">This is scanned result:</div>
+        <div id="controls">
+            <button id="startBtn">Start</button>
+            <button id="stopBtn">Stop</button>
+            <button id="backBtn" onclick="location.reload()">Go Back</button>
+
+            <!-- For testic static Images -->
+            <!-- <input type="file" id="file-input" accept="image/*"> -->
+            
+        </div>
+        <!-- Load jsQR from file  -->
+        <script src="/js/jsqrcode.js"></script>
+        <script src="/js/scanLogic.js"></script>
+        <script src="/js/inputCodeMan.js"></script>
+        <script>
+            
+        </script>
+    </body>
+</html>

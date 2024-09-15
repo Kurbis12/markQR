@@ -1,0 +1,113 @@
+/* Style for the confirmation container */
+.confirmation-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the confirmation button */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button:active {
+    background-color: #1e7e34;
+}
+
+#bunchFlowerDataDisplay {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#bunchFlowerDataDisplay .column {
+    flex: 1;
+    padding: 0 10px; /* Adjust spacing as needed */
+}
+
+#bunchFlowerDataDisplay .names {
+    border-right: 1px solid #ddd; /* Optional: add a border to separate columns */
+    
+}
+
+#flowertest {
+    padding-right: 0px;
+    font-weight: bold;
+    margin-left: 25%;
+    
+} 
+#resulttest {
+    white-space: nowrap;  /* Prevent the text from wrapping to the next line */
+    overflow: hidden;     /* Hide overflow text, if necessary */
+    text-overflow: ellipsis; /* If the text overflows, show ellipsis (...) */
+    display: inline-block; /* Keep the element on the same line */
+    max-width: 100%;       /* Ensure it doesn't exceed its parent container */
+}
+
+#flowerDataContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.flower-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;  /* Add spacing between rows if needed */
+}
+
+.flowertest, #resulttest {
+    flex: 1;
+    white-space: nowrap;  /* Prevent text wrapping */
+    overflow: hidden;     /* Hide overflow text */
+    text-overflow: ellipsis;  /* Show ellipsis if text overflows */
+}
+
+
+
+.data-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    margin: 10px 0;
+    text-align:left;
+    margin-left: 25%;
+}
+
+.data-container > div {
+    flex: 1 1 50%; /* Allow items to take up half the width */
+    padding: 5px;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Optional: Add some visual separation */
+.data-container > div:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+#labeltest {
+    font-weight: bold;
+}
+

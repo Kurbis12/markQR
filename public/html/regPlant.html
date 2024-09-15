@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/registrationStyle.css">
+    <title>Plant Registration</title>
+</head>
+<body>
+    <h1>Registration Page</h1>
+    
+    <div class="form-container">
+        <form id="registrationForm">
+            <div>
+                <p id="result"></p>
+            </div>
+            <div id="ghOption">
+                <select id="greenhouse">
+                    <option id="selectOpt" value="" disabled selected>Select Greenhouse</option>
+                    <option value="GreenHouse1">GreenHouse1</option>
+                    <option value="GreenHouse2">GreenHouse2</option>
+                    <option value="GreenHouse3">GreenHouse3</option>
+                    <option value="GreenHouse4">GreenHouse4</option>
+                    <option value="GreenHouse5">GreenHouse5</option>
+                    <option value="GreenHouse6">GreenHouse6</option>
+                    <option value="GreenHouse7">GreenHouse7</option>
+                </select>
+            </div>
+            <div id="lineName">
+                <input id="lineInput" type="number" placeholder="Add line number">
+            </div>
+            <div id="plantName">
+                <input id="plantInput" type="number" placeholder="Add plant number">
+            </div>
+        </form>
+        <div class="button-container">
+            <button id="Back" onclick="window.history.back();">Back</button>
+            <button id="Next" type="button">Next</button>
+        </div>
+    </div>
+    
+    <script>
+        // Display the QR code data from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultElement = document.getElementById('result');
+            const scannedCode = localStorage.getItem('scannedCode');
+            if (scannedCode) {
+                resultElement.textContent = `${scannedCode}`;
+            } else {
+                resultElement.textContent = 'No QR code data found.';
+            }
+        });
+
+        // Handle the Next button click event and store form data in localStorage
+        document.getElementById('Next').addEventListener('click', function() {
+            const greenhouse = document.getElementById('greenhouse').value;
+            const lineInput = document.getElementById('lineInput').value;
+            const plantInput = document.getElementById('plantInput').value;
+            const resultElement = document.getElementById('result').textContent;
+            const date = new Date().toISOString();
+
+            if (greenhouse && lineInput && plantInput && resultElement) {
+                // Save form data to localStorage
+                const plantData = {
+                    code_name: resultElement,
+                    greenhouse: greenhouse,
+                    line_nr: lineInput,
+                    plant_nr: plantInput,
+                    date: date
+                };
+
+                localStorage.setItem('plantData', JSON.stringify(plantData));
+                // Redirect to confirm.html
+                window.location.href = '../html/confirm.html';
+            } else {
+                alert('Please fill out all fields');
+            }
+        });
+
+        // Change dropdown text color
+        document.getElementById('greenhouse').addEventListener('change', function() {
+            const selectedValue = this.value;
+            const placeholderValue = "";
+
+            if (selectedValue === placeholderValue) {
+                this.value = placeholderValue;
+                this.style.color = 'lightgrey';
+                return;
+            }
+
+            this.style.color = 'black';
+        });
+    </script>
+</body>
+</html>

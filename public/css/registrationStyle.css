@@ -1,0 +1,141 @@
+/* Style for the form container */
+.form-container {
+    width: 90%; /* Use a percentage to make it responsive */
+    max-width: 500px; /* Maximum width for larger screens */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the form fields */
+#registrationForm div {
+    margin-bottom: 20px;
+}
+
+p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+/* Common style for both select and input fields */
+#greenhouse, input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    
+}
+
+/* Style the select element to have light grey color initially */
+#greenhouse {
+    color: lightgrey;
+}
+
+/* Style the placeholder option to be light grey */
+#greenhouse option[disabled] {
+    color: lightgrey;
+}
+
+/* Ensure the selected option's text is visible */
+#greenhouse option:not([disabled]) {
+    color: black;
+}
+
+/* Additional styling for the select element to make it consistent */
+#greenhouse:focus {
+    color: black; /* Ensure the text color is black when the select is focused */
+}
+
+/* Add a placeholder color for the dropdown when not focused */
+#greenhouse {
+    color: lightgrey;
+}
+
+
+/* Button container */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* General button styling */
+button {
+    width: 48%; /* Buttons take up 48% of the container width */
+    padding: 12px 0; /* Adjust padding to look good on smaller screens */
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Back button styling */
+#Back {
+    background-color: #dc3545;
+    color: white;
+}
+
+#Back:hover {
+    background-color: #c82333;
+}
+
+#Back:active {
+    background-color: #a71d2a;
+}
+
+/* Next button styling */
+#Next {
+    background-color: #28a745;
+    color: white;
+}
+
+#Next:hover {
+    background-color: #218838;
+}
+
+#Next:active {
+    background-color: #1e7e34;
+}
+
+/* Add some hover and focus styles for accessibility */
+button:hover {
+    transform: scale(1.05);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+/* Media Query for smaller screens */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 15px; /* Adjust padding on smaller screens */
+    }
+
+    button {
+        width: 100%; /* Stack buttons on smaller screens */
+        margin-bottom: 10px; /* Add space between buttons */
+    }
+}
+
+/* Media Query for very large screens */
+@media (min-width: 1200px) {
+    .form-container {
+        max-width: 700px; /* Increase max width on very large screens */
+    }
+
+    button {
+        font-size: 18px; /* Slightly larger font on big screens */
+    }
+}
