@@ -142,7 +142,7 @@ function scanQRCode() {
             localStorage.setItem('scannedCode', code.data);
 
             // Redirect to result.html
-            window.location.href = '/html/regMenu.html'; // Adjust path if needed
+            window.location.href = 'public/html/regMenu.html'; // Adjust path if needed
         } else {
             // Continue scanning
             requestAnimationFrame(scanQRCode);
